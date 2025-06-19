@@ -1,0 +1,433 @@
+name: Build and Package
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PRODUCT_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || '1.0.0-dev' }}
+
+jobs:
+  build-macos:
+    name: Build macOS
+    runs-on: macos-latest
+    
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
+        build_type: [Release]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install dependencies
+      run: |
+        brew install cmake ninja
+    
+    - name: Setup dummy codesigning certificate
+      run: |
+        # Create a dummy certificate for CI
+        cat > dummy_cert.conf << EOF
+        [ req ]
+        distinguished_name = req_distinguished_name
+        x509_extensions = v3_req
+        prompt = no
+        
+        [ req_distinguished_name ]
+        C = US
+        ST = CA
+        L = San Francisco
+        O = KhDetector Audio
+        OU = Development
+        CN = KhDetector Developer
+        
+        [ v3_req ]
+        keyUsage = digitalSignature, keyEncipherment
+        extendedKeyUsage = codeSigning
+        EOF
+        
+        # Generate dummy certificate and key
+        openssl req -x509 -newkey rsa:2048 -keyout dummy_key.pem -out dummy_cert.pem -days 365 -nodes -config dummy_cert.conf
+        
+        # Import to keychain
+        security create-keychain -p "dummy" dummy.keychain
+        security default-keychain -s dummy.keychain
+        security unlock-keychain -p "dummy" dummy.keychain
+        
+        # Convert to p12 and import
+        openssl pkcs12 -export -out dummy_cert.p12 -inkey dummy_key.pem -in dummy_cert.pem -passout pass:dummy
+        security import dummy_cert.p12 -k dummy.keychain -P dummy -A
+        
+        # Set trust settings
+        security set-key-partition-list -S apple-tool:,apple: -s -k dummy dummy.keychain
+        
+        echo "DEVELOPER_ID=KhDetector Developer" >> $GITHUB_ENV
+    
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. \
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+          -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }} \
+          -DBUILD_TESTS=OFF \
+          -DBUILD_VST3=ON \
+          -DBUILD_AU=ON \
+          -DBUILD_CLAP=ON \
+          -GNinja
+    
+    - name: Build plugins
+      run: |
+        cd build
+        ninja
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: macos-${{ matrix.arch }}-${{ matrix.build_type }}-build
+        path: |
+          build/VST3/
+          build/AU/
+          build/*.clap
+          build/*demo*
+        retention-days: 7
+
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        arch: [x64]
+        build_type: [Release]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v1.3
+    
+    - name: Install dependencies
+      run: |
+        choco install cmake ninja
+    
+    - name: Setup dummy code signing certificate
+      shell: powershell
+      run: |
+        # Create a dummy certificate for CI
+        $cert = New-SelfSignedCertificate -Subject "CN=KhDetector Audio, O=KhDetector Audio, C=US" -Type CodeSigning -KeyAlgorithm RSA -KeyLength 2048 -Provider "Microsoft Enhanced RSA and AES Cryptographic Provider" -KeyExportPolicy Exportable -KeyUsage DigitalSignature -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(1)
+        
+        # Export certificate
+        $password = ConvertTo-SecureString -String "dummy" -Force -AsPlainText
+        Export-PfxCertificate -Cert $cert -FilePath "dummy_cert.pfx" -Password $password
+        
+        # Store thumbprint for signing
+        echo "CERTIFICATE_THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
+        
+        Write-Host "Dummy certificate created with thumbprint: $($cert.Thumbprint)"
+    
+    - name: Configure CMake
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBUILD_TESTS=OFF -DBUILD_VST3=ON -DBUILD_CLAP=ON -GNinja
+    
+    - name: Build plugins
+      run: |
+        cd build
+        ninja
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-${{ matrix.arch }}-${{ matrix.build_type }}-build
+        path: |
+          build/VST3/
+          build/*.clap
+          build/*demo*.exe
+        retention-days: 7
+
+  package-macos:
+    name: Package macOS
+    runs-on: macos-latest
+    needs: build-macos
+    if: github.event_name == 'push' || github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Download x86_64 build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: macos-x86_64-Release-build
+        path: build-x86_64/
+    
+    - name: Download arm64 build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: macos-arm64-Release-build
+        path: build-arm64/
+    
+    - name: Create universal binaries
+      run: |
+        mkdir -p build/VST3 build/AU
+        
+        # Create universal VST3 if both architectures exist
+        if [[ -d "build-x86_64/VST3/KhDetector.vst3" ]] && [[ -d "build-arm64/VST3/KhDetector.vst3" ]]; then
+          cp -R "build-x86_64/VST3/KhDetector.vst3" "build/VST3/"
+          
+          # Combine binaries
+          lipo -create \
+            "build-x86_64/VST3/KhDetector.vst3/Contents/MacOS/KhDetector" \
+            "build-arm64/VST3/KhDetector.vst3/Contents/MacOS/KhDetector" \
+            -output "build/VST3/KhDetector.vst3/Contents/MacOS/KhDetector"
+        else
+          # Use whichever architecture is available
+          [[ -d "build-x86_64/VST3" ]] && cp -R build-x86_64/VST3/* build/VST3/ || true
+          [[ -d "build-arm64/VST3" ]] && cp -R build-arm64/VST3/* build/VST3/ || true
+        fi
+        
+        # Same for AU
+        if [[ -d "build-x86_64/AU/KhDetector.component" ]] && [[ -d "build-arm64/AU/KhDetector.component" ]]; then
+          cp -R "build-x86_64/AU/KhDetector.component" "build/AU/"
+          
+          lipo -create \
+            "build-x86_64/AU/KhDetector.component/Contents/MacOS/KhDetector" \
+            "build-arm64/AU/KhDetector.component/Contents/MacOS/KhDetector" \
+            -output "build/AU/KhDetector.component/Contents/MacOS/KhDetector"
+        else
+          [[ -d "build-x86_64/AU" ]] && cp -R build-x86_64/AU/* build/AU/ || true
+          [[ -d "build-arm64/AU" ]] && cp -R build-arm64/AU/* build/AU/ || true
+        fi
+        
+        # Copy CLAP and demo apps
+        [[ -f "build-x86_64/KhDetector_CLAP.clap" ]] && cp "build-x86_64/KhDetector_CLAP.clap" build/ || true
+        [[ -f "build-arm64/KhDetector_CLAP.clap" ]] && cp "build-arm64/KhDetector_CLAP.clap" build/ || true
+        
+        # Copy demo apps
+        find build-x86_64 build-arm64 -name "*demo*" -type f 2>/dev/null | head -1 | xargs -I {} cp {} build/ || true
+    
+    - name: Setup dummy codesigning certificate
+      run: |
+        # Create a dummy certificate for CI (same as build step)
+        cat > dummy_cert.conf << EOF
+        [ req ]
+        distinguished_name = req_distinguished_name
+        x509_extensions = v3_req
+        prompt = no
+        
+        [ req_distinguished_name ]
+        C = US
+        ST = CA
+        L = San Francisco
+        O = KhDetector Audio
+        OU = Development
+        CN = KhDetector Developer
+        
+        [ v3_req ]
+        keyUsage = digitalSignature, keyEncipherment
+        extendedKeyUsage = codeSigning
+        EOF
+        
+        openssl req -x509 -newkey rsa:2048 -keyout dummy_key.pem -out dummy_cert.pem -days 365 -nodes -config dummy_cert.conf
+        
+        security create-keychain -p "dummy" dummy.keychain
+        security default-keychain -s dummy.keychain
+        security unlock-keychain -p "dummy" dummy.keychain
+        
+        openssl pkcs12 -export -out dummy_cert.p12 -inkey dummy_key.pem -in dummy_cert.pem -passout pass:dummy
+        security import dummy_cert.p12 -k dummy.keychain -P dummy -A
+        security set-key-partition-list -S apple-tool:,apple: -s -k dummy dummy.keychain
+        
+        echo "DEVELOPER_ID=KhDetector Developer" >> $GITHUB_ENV
+    
+    - name: Make packaging script executable
+      run: chmod +x scripts/package-macos.sh
+    
+    - name: Create macOS package
+      run: |
+        export PRODUCT_VERSION="${{ env.PRODUCT_VERSION }}"
+        export CI=true
+        export DEVELOPER_ID="KhDetector Developer"
+        ./scripts/package-macos.sh
+    
+    - name: Upload macOS package
+      uses: actions/upload-artifact@v3
+      with:
+        name: macos-package
+        path: |
+          packages/*.pkg
+          packages/*.sha256
+          packages/*.md5
+        retention-days: 30
+    
+    - name: Upload to release
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: packages/KhDetector-${{ env.PRODUCT_VERSION }}-macOS.pkg
+        asset_name: KhDetector-${{ env.PRODUCT_VERSION }}-macOS.pkg
+        asset_content_type: application/octet-stream
+
+  package-windows:
+    name: Package Windows
+    runs-on: windows-latest
+    needs: build-windows
+    if: github.event_name == 'push' || github.event_name == 'release'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: windows-x64-Release-build
+        path: build/
+    
+    - name: Install NSIS
+      run: |
+        choco install nsis
+        # Add NSIS to PATH
+        echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
+    
+    - name: Setup dummy code signing certificate
+      shell: powershell
+      run: |
+        # Create a dummy certificate for CI (same as build step)
+        $cert = New-SelfSignedCertificate -Subject "CN=KhDetector Audio, O=KhDetector Audio, C=US" -Type CodeSigning -KeyAlgorithm RSA -KeyLength 2048 -Provider "Microsoft Enhanced RSA and AES Cryptographic Provider" -KeyExportPolicy Exportable -KeyUsage DigitalSignature -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(1)
+        
+        # Store thumbprint for signing
+        echo "CERTIFICATE_THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
+        
+        Write-Host "Dummy certificate created with thumbprint: $($cert.Thumbprint)"
+    
+    - name: Create Windows package
+      shell: powershell
+      run: |
+        $env:PRODUCT_VERSION = "${{ env.PRODUCT_VERSION }}"
+        .\scripts\package-windows.ps1 -ProductVersion $env:PRODUCT_VERSION -CertificateThumbprint $env:CERTIFICATE_THUMBPRINT
+    
+    - name: Upload Windows package
+      uses: actions/upload-artifact@v3
+      with:
+        name: windows-package
+        path: |
+          packages/*.msi
+          packages/*.exe
+          packages/*.sha256
+          packages/*.md5
+        retention-days: 30
+    
+    - name: Upload to release
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: packages/KhDetector-${{ env.PRODUCT_VERSION }}-Windows.msi
+        asset_name: KhDetector-${{ env.PRODUCT_VERSION }}-Windows.msi
+        asset_content_type: application/octet-stream
+
+  create-release-summary:
+    name: Create Release Summary
+    runs-on: ubuntu-latest
+    needs: [package-macos, package-windows]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+    
+    steps:
+    - name: Download all packages
+      uses: actions/download-artifact@v3
+    
+    - name: Create release summary
+      run: |
+        echo "# KhDetector Build Summary" > release_summary.md
+        echo "" >> release_summary.md
+        echo "**Version:** ${{ env.PRODUCT_VERSION }}" >> release_summary.md
+        echo "**Commit:** ${{ github.sha }}" >> release_summary.md
+        echo "**Build Date:** $(date -u)" >> release_summary.md
+        echo "" >> release_summary.md
+        
+        echo "## Package Information" >> release_summary.md
+        echo "" >> release_summary.md
+        
+        # macOS package info
+        if [[ -f "macos-package"/*.pkg ]]; then
+          PKG_FILE=$(ls macos-package/*.pkg | head -1)
+          PKG_SIZE=$(du -h "$PKG_FILE" | cut -f1)
+          PKG_SHA256=$(cat macos-package/*.sha256 | cut -d' ' -f1)
+          
+          echo "### macOS Package" >> release_summary.md
+          echo "- **File:** $(basename $PKG_FILE)" >> release_summary.md
+          echo "- **Size:** $PKG_SIZE" >> release_summary.md
+          echo "- **SHA256:** $PKG_SHA256" >> release_summary.md
+          echo "- **Formats:** VST3, AU, CLAP" >> release_summary.md
+          echo "- **Requirements:** macOS 10.13+, 64-bit Intel/Apple Silicon" >> release_summary.md
+          echo "" >> release_summary.md
+        fi
+        
+        # Windows package info
+        if [[ -f "windows-package"/*.msi ]] || [[ -f "windows-package"/*.exe ]]; then
+          MSI_FILE=$(ls windows-package/*.{msi,exe} 2>/dev/null | head -1)
+          if [[ -f "$MSI_FILE" ]]; then
+            MSI_SIZE=$(du -h "$MSI_FILE" | cut -f1)
+            MSI_SHA256=$(cat windows-package/*.sha256 | cut -d' ' -f1)
+            
+            echo "### Windows Package" >> release_summary.md
+            echo "- **File:** $(basename $MSI_FILE)" >> release_summary.md
+            echo "- **Size:** $MSI_SIZE" >> release_summary.md
+            echo "- **SHA256:** $MSI_SHA256" >> release_summary.md
+            echo "- **Formats:** VST3, CLAP" >> release_summary.md
+            echo "- **Requirements:** Windows 10+, 64-bit" >> release_summary.md
+            echo "" >> release_summary.md
+          fi
+        fi
+        
+        echo "## Installation Instructions" >> release_summary.md
+        echo "" >> release_summary.md
+        echo "### macOS" >> release_summary.md
+        echo "1. Download the .pkg file" >> release_summary.md
+        echo "2. Double-click to run the installer" >> release_summary.md
+        echo "3. Follow the installation wizard" >> release_summary.md
+        echo "4. Restart your DAW and rescan plugins" >> release_summary.md
+        echo "" >> release_summary.md
+        echo "### Windows" >> release_summary.md
+        echo "1. Download the .msi file" >> release_summary.md
+        echo "2. Run as administrator" >> release_summary.md
+        echo "3. Follow the installation wizard" >> release_summary.md
+        echo "4. Restart your DAW and rescan plugins" >> release_summary.md
+        echo "" >> release_summary.md
+        
+        echo "## Plugin Locations" >> release_summary.md
+        echo "" >> release_summary.md
+        echo "### macOS" >> release_summary.md
+        echo "- VST3: \`/Library/Audio/Plug-Ins/VST3/KhDetector.vst3\`" >> release_summary.md
+        echo "- AU: \`/Library/Audio/Plug-Ins/Components/KhDetector.component\`" >> release_summary.md
+        echo "- CLAP: \`/Library/Audio/Plug-Ins/CLAP/KhDetector_CLAP.clap\`" >> release_summary.md
+        echo "" >> release_summary.md
+        echo "### Windows" >> release_summary.md
+        echo "- VST3: \`C:\\Program Files\\Common Files\\VST3\\KhDetector.vst3\`" >> release_summary.md
+        echo "- CLAP: \`C:\\Program Files\\Common Files\\CLAP\\KhDetector_CLAP.clap\`" >> release_summary.md
+        
+        cat release_summary.md
+    
+    - name: Upload release summary
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-summary
+        path: release_summary.md
+        retention-days: 90 

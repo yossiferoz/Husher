@@ -2,3 +2,8 @@
 	path = external/vst3sdk
 	url = https://github.com/steinbergmedia/vst3sdk.git
 	branch = master 
+
+[submodule "external/clap-sdk"]
+	path = external/clap-sdk
+	url = https://github.com/free-audio/clap.git
+	branch = main 

@@ -1,0 +1,113 @@
+name: Build KhDetector
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64" \
+          -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13
+    
+    - name: Build
+      run: cmake --build build --config Debug --parallel
+    
+    - name: Run Tests
+      run: |
+        cd build
+        ctest --verbose --output-on-failure
+    
+    - name: Upload macOS artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: KhDetector-macOS-Debug
+        path: |
+          build/Debug/
+          build/*.vst3/
+        retention-days: 30
+
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v2
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Debug
+    
+    - name: Build
+      run: cmake --build build --config Debug --parallel
+    
+    - name: Run Tests
+      run: |
+        cd build
+        ctest --verbose --output-on-failure -C Debug
+    
+    - name: Upload Windows artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: KhDetector-Windows-Debug
+        path: |
+          build/Debug/
+          build/**/*.vst3
+        retention-days: 30
+
+  build-linux:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake ninja-build
+    
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=Debug
+    
+    - name: Build
+      run: cmake --build build --config Debug --parallel
+    
+    - name: Run Tests
+      run: |
+        cd build
+        ctest --verbose --output-on-failure
+    
+    - name: Upload Linux artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: KhDetector-Linux-Debug
+        path: |
+          build/
+        retention-days: 30 

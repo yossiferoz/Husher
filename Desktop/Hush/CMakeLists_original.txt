@@ -1,0 +1,535 @@
+cmake_minimum_required(VERSION 3.20)
+project(KhDetector VERSION 1.0.0)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Set default build type
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
+# Audio processing options
+set(DECIM_FACTOR 3 CACHE STRING "Decimation factor for downsampling (default: 3 for 48kHz->16kHz)")
+add_compile_definitions(DECIM_FACTOR=${DECIM_FACTOR})
+
+# Platform-specific settings
+if(APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13")
+endif()
+
+# Option to build tests
+option(BUILD_TESTS "Build unit tests" ON)
+
+# Add VSTGUI as a subdirectory
+set(VSTGUI_STANDALONE OFF)
+set(VSTGUI_TOOLS OFF)
+set(VSTGUI_DISABLE_UNITTESTS ON)
+add_subdirectory(external/vstgui)
+
+# Add VST3 SDK submodule (for VST3 plugin)
+add_subdirectory(external/vst3sdk EXCLUDE_FROM_ALL)
+
+# Add CLAP SDK
+set(CLAP_BUILD_TESTS OFF CACHE BOOL "Don't build CLAP tests")
+add_subdirectory(external/clap-sdk EXCLUDE_FROM_ALL)
+
+# GoogleTest setup
+if(BUILD_TESTS)
+    include(FetchContent)
+    FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP ON
+    )
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+    
+    # Enable testing
+    enable_testing()
+    
+    # Add test executable
+    add_executable(
+        KhDetectorTests
+        tests/test_ringbuffer.cpp
+        tests/test_decimator.cpp
+        tests/test_threadpool.cpp
+        tests/test_postprocessor.cpp
+        tests/test_midieventhandler.cpp
+        tests/test_openglgui.cpp
+        tests/test_resizable_ui.cpp
+        src/RealtimeThreadPool.cpp
+        src/AiInference.cpp
+        src/PostProcessor.cpp
+        src/MidiEventHandler.cpp
+        src/KhDetectorOpenGLView.cpp
+        src/KhDetectorGUIView.cpp
+        src/KhDetectorEditor.cpp
+    )
+    
+    # Include directories for tests
+    target_include_directories(KhDetectorTests PRIVATE
+        src
+        external/vst3sdk
+        external/vst3sdk/pluginterfaces
+        external/vst3sdk/public.sdk
+        external/vst3sdk/base
+        external/vstgui
+        external/vstgui/vstgui
+    )
+    
+    # Find threading library
+    find_package(Threads REQUIRED)
+    
+    # Find OpenGL
+    find_package(OpenGL REQUIRED)
+    
+    # Link test executable with GoogleTest
+    target_link_libraries(
+        KhDetectorTests
+        gtest_main
+        gtest
+        Threads::Threads  # Required for threading tests
+        OpenGL::GL
+        vstgui
+        vstgui_uidescription
+    )
+    
+    # Platform-specific OpenGL and GUI libraries for tests
+    if(APPLE)
+        find_library(COCOA_LIBRARY Cocoa)
+        find_library(OPENGL_LIBRARY OpenGL)
+        target_link_libraries(KhDetectorTests ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+    elseif(WIN32)
+        target_link_libraries(KhDetectorTests opengl32 gdi32)
+    else()
+        find_package(PkgConfig REQUIRED)
+        pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+        target_link_libraries(KhDetectorTests ${GTK3_LIBRARIES} GL)
+        target_include_directories(KhDetectorTests PRIVATE ${GTK3_INCLUDE_DIRS})
+    endif()
+    
+    # Compiler settings for tests
+    target_compile_features(KhDetectorTests PRIVATE cxx_std_17)
+    
+    # Sanitizer options for CI and development
+    option(ENABLE_SANITIZERS "Enable address and thread sanitizers for tests" OFF)
+    option(ENABLE_CI_SANITIZERS "Enable sanitizers for CI (includes thread and address)" OFF)
+    
+    if(MSVC)
+        target_compile_options(KhDetectorTests PRIVATE /W4)
+        target_compile_definitions(KhDetectorTests PRIVATE
+            WIN32_LEAN_AND_MEAN
+            NOMINMAX
+        )
+        
+        # MSVC sanitizer support
+        if(ENABLE_SANITIZERS OR ENABLE_CI_SANITIZERS)
+            target_compile_options(KhDetectorTests PRIVATE /fsanitize=address)
+            target_link_options(KhDetectorTests PRIVATE /fsanitize=address)
+        endif()
+    else()
+        target_compile_options(KhDetectorTests PRIVATE -Wall -Wextra -Wpedantic)
+        
+        # GCC/Clang sanitizer support
+        if(ENABLE_CI_SANITIZERS)
+            # CI sanitizers: thread + address (comprehensive testing)
+            target_compile_options(KhDetectorTests PRIVATE 
+                -fsanitize=thread,address
+                -fno-omit-frame-pointer
+                -g
+            )
+            target_link_options(KhDetectorTests PRIVATE 
+                -fsanitize=thread,address
+            )
+            message(STATUS "Enabled CI sanitizers: thread + address")
+        elseif(ENABLE_SANITIZERS)
+            # Development sanitizers: address only (faster iteration)
+            target_compile_options(KhDetectorTests PRIVATE 
+                -fsanitize=address
+                -fno-omit-frame-pointer
+                -g
+            )
+            target_link_options(KhDetectorTests PRIVATE 
+                -fsanitize=address
+            )
+            message(STATUS "Enabled development sanitizers: address")
+        endif()
+    endif()
+    
+    # Register tests with CTest
+    include(GoogleTest)
+    gtest_discover_tests(KhDetectorTests)
+    
+    # Custom test target for convenience
+    add_custom_target(run_tests
+        COMMAND ${CMAKE_CTEST_COMMAND} --verbose
+        DEPENDS KhDetectorTests
+        COMMENT "Running unit tests"
+    )
+endif()
+
+# Add example executables for demonstration
+add_executable(opengl_gui_demo
+    examples/opengl_gui_demo.cpp
+    src/KhDetectorOpenGLView.cpp
+    src/KhDetectorGUIView.cpp
+)
+
+target_include_directories(opengl_gui_demo PRIVATE
+    src
+    external/vstgui
+)
+
+find_package(OpenGL REQUIRED)
+target_link_libraries(opengl_gui_demo 
+    OpenGL::GL
+    vstgui
+    vstgui_uidescription
+)
+
+if(APPLE)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(OPENGL_LIBRARY OpenGL)
+    target_link_libraries(opengl_gui_demo ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+elseif(WIN32)
+    target_link_libraries(opengl_gui_demo opengl32 gdi32)
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    target_link_libraries(opengl_gui_demo ${GTK3_LIBRARIES} GL)
+    target_include_directories(opengl_gui_demo PRIVATE ${GTK3_INCLUDE_DIRS})
+endif()
+
+target_compile_features(opengl_gui_demo PRIVATE cxx_std_17)
+
+if(MSVC)
+    target_compile_options(opengl_gui_demo PRIVATE /W4)
+    target_compile_definitions(opengl_gui_demo PRIVATE
+        WIN32_LEAN_AND_MEAN
+        NOMINMAX
+    )
+else()
+    target_compile_options(opengl_gui_demo PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# Add resizable UI demo
+add_executable(resizable_ui_demo
+    examples/resizable_ui_demo.cpp
+    src/KhDetectorEditor.cpp
+    src/KhDetectorController.cpp
+)
+
+target_include_directories(resizable_ui_demo PRIVATE
+    src
+    external/vst3sdk
+    external/vst3sdk/pluginterfaces
+    external/vst3sdk/public.sdk
+    external/vst3sdk/base
+    external/vstgui
+    external/vstgui/vstgui
+)
+
+target_link_libraries(resizable_ui_demo 
+    vstgui
+    vstgui_uidescription
+    Threads::Threads
+)
+
+if(APPLE)
+    target_link_libraries(resizable_ui_demo ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+elseif(WIN32)
+    target_link_libraries(resizable_ui_demo gdi32 user32)
+else()
+    target_link_libraries(resizable_ui_demo ${GTK3_LIBRARIES})
+    target_include_directories(resizable_ui_demo PRIVATE ${GTK3_INCLUDE_DIRS})
+endif()
+
+target_compile_features(resizable_ui_demo PRIVATE cxx_std_17)
+
+# Add VST3 SDK required definitions
+target_compile_definitions(resizable_ui_demo PRIVATE
+    DEVELOPMENT=1
+    VSTGUI_LIVE_EDITING=1
+)
+
+if(MSVC)
+    target_compile_options(resizable_ui_demo PRIVATE /W4)
+    target_compile_definitions(resizable_ui_demo PRIVATE
+        WIN32_LEAN_AND_MEAN
+        NOMINMAX
+    )
+else()
+    target_compile_options(resizable_ui_demo PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# Add simple UI demo (without VSTGUI dependencies)
+add_executable(simple_ui_demo
+    examples/simple_ui_demo.cpp
+)
+
+target_compile_features(simple_ui_demo PRIVATE cxx_std_17)
+target_link_libraries(simple_ui_demo Threads::Threads)
+
+if(MSVC)
+    target_compile_options(simple_ui_demo PRIVATE /W4)
+else()
+    target_compile_options(simple_ui_demo PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# Add waveform visualization demo
+add_executable(waveform_demo
+    examples/waveform_demo.cpp
+    src/WaveformData.cpp
+    src/WaveformRenderer.cpp
+)
+
+target_include_directories(waveform_demo PRIVATE
+    src
+)
+
+find_package(OpenGL REQUIRED)
+target_compile_features(waveform_demo PRIVATE cxx_std_17)
+target_link_libraries(waveform_demo Threads::Threads OpenGL::GL)
+
+if(APPLE)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(OPENGL_LIBRARY OpenGL)
+    target_link_libraries(waveform_demo ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+elseif(WIN32)
+    target_link_libraries(waveform_demo opengl32 gdi32)
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    target_link_libraries(waveform_demo ${GTK3_LIBRARIES} GL)
+    target_include_directories(waveform_demo PRIVATE ${GTK3_INCLUDE_DIRS})
+endif()
+
+if(MSVC)
+    target_compile_options(waveform_demo PRIVATE /W4)
+else()
+    target_compile_options(waveform_demo PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# Add CLAP plugin demo
+add_executable(clap_demo
+    examples/clap_demo.cpp
+)
+
+target_include_directories(clap_demo PRIVATE
+    src
+    external/clap-sdk/include
+)
+
+target_compile_features(clap_demo PRIVATE cxx_std_17)
+target_link_libraries(clap_demo Threads::Threads)
+
+if(MSVC)
+    target_compile_options(clap_demo PRIVATE /W4)
+else()
+    target_compile_options(clap_demo PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# VST3 Plugin target
+add_library(KhDetector_VST3 MODULE)
+
+# VST3 Plugin sources
+target_sources(KhDetector_VST3 PRIVATE
+    src/KhDetectorProcessor.cpp
+    src/KhDetectorController.cpp
+    src/KhDetectorFactory.cpp
+    src/KhDetectorVersion.h
+    src/RingBuffer.h
+    src/PolyphaseDecimator.h
+    src/RealtimeThreadPool.cpp
+    src/AiInference.cpp
+    src/PostProcessor.cpp
+    src/MidiEventHandler.cpp
+    src/WaveformData.cpp
+    src/WaveformRenderer.cpp
+    src/KhDetectorOpenGLView.cpp
+    src/KhDetectorGUIView.cpp
+    src/KhDetectorEditor.cpp
+)
+
+# VST3 Include directories
+target_include_directories(KhDetector_VST3 PRIVATE
+    src
+    external/vst3sdk
+    external/vst3sdk/pluginterfaces
+    external/vst3sdk/public.sdk
+    external/vst3sdk/base
+    external/vstgui
+    external/vstgui/vstgui
+)
+
+# VST3 Link with VST3 SDK and VSTGUI
+target_link_libraries(KhDetector_VST3 PRIVATE
+    sdk
+    pluginterfaces
+    vstgui
+    vstgui_uidescription
+    Threads::Threads
+    OpenGL::GL
+)
+
+# VST3 Compiler-specific flags
+target_compile_features(KhDetector_VST3 PRIVATE cxx_std_17)
+
+# VST3 Platform-specific settings
+if(APPLE)
+    set_target_properties(KhDetector_VST3 PROPERTIES
+        BUNDLE TRUE
+        BUNDLE_EXTENSION "vst3"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Info.plist.in"
+        MACOSX_BUNDLE_BUNDLE_NAME "KhDetector"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2024"
+        XCODE_ATTRIBUTE_WRAPPER_EXTENSION "vst3"
+        XCODE_ATTRIBUTE_GENERATE_PKGINFO_FILE "YES"
+    )
+    target_link_libraries(KhDetector_VST3 PRIVATE ${COCOA_LIBRARY} ${OPENGL_LIBRARY})
+elseif(WIN32)
+    set_target_properties(KhDetector_VST3 PROPERTIES
+        SUFFIX ".vst3"
+    )
+    target_link_libraries(KhDetector_VST3 PRIVATE opengl32 gdi32 user32)
+else()
+    set_target_properties(KhDetector_VST3 PROPERTIES
+        SUFFIX ".vst3"
+    )
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    target_link_libraries(KhDetector_VST3 PRIVATE ${GTK3_LIBRARIES} GL)
+    target_include_directories(KhDetector_VST3 PRIVATE ${GTK3_INCLUDE_DIRS})
+endif()
+
+# VST3 Compiler settings
+if(MSVC)
+    target_compile_options(KhDetector_VST3 PRIVATE /W4)
+    target_compile_definitions(KhDetector_VST3 PRIVATE
+        WIN32_LEAN_AND_MEAN
+        NOMINMAX
+        DEVELOPMENT=1
+    )
+    # Enable AVX/SSE on Windows
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64|x86_64|x64")
+        target_compile_options(KhDetector_VST3 PRIVATE /arch:AVX)
+    endif()
+else()
+    target_compile_options(KhDetector_VST3 PRIVATE -Wall -Wextra -Wpedantic)
+    target_compile_definitions(KhDetector_VST3 PRIVATE DEVELOPMENT=1)
+    # Enable SIMD optimizations
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+        target_compile_options(KhDetector_VST3 PRIVATE -msse2 -msse4.1 -mavx)
+    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+        target_compile_options(KhDetector_VST3 PRIVATE -march=armv8-a)
+    endif()
+endif()
+
+# CLAP Plugin target
+add_library(KhDetector_CLAP MODULE)
+
+# CLAP Plugin sources
+target_sources(KhDetector_CLAP PRIVATE
+    clap/kh_detector.cc
+    src/RingBuffer.h
+    src/PolyphaseDecimator.h
+    src/RealtimeThreadPool.cpp
+    src/AiInference.cpp
+    src/PostProcessor.cpp
+    src/MidiEventHandler.cpp
+    src/WaveformData.cpp
+)
+
+# CLAP Include directories
+target_include_directories(KhDetector_CLAP PRIVATE
+    src
+    external/clap-sdk/include
+)
+
+# CLAP Link libraries
+target_link_libraries(KhDetector_CLAP PRIVATE
+    Threads::Threads
+)
+
+# CLAP Compiler-specific flags
+target_compile_features(KhDetector_CLAP PRIVATE cxx_std_17)
+
+# CLAP Platform-specific settings
+if(APPLE)
+    set_target_properties(KhDetector_CLAP PROPERTIES
+        BUNDLE TRUE
+        BUNDLE_EXTENSION "clap"
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Info.plist.in"
+        MACOSX_BUNDLE_BUNDLE_NAME "KhDetector"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_COPYRIGHT "Copyright © 2024"
+    )
+elseif(WIN32)
+    set_target_properties(KhDetector_CLAP PROPERTIES
+        SUFFIX ".clap"
+    )
+else()
+    set_target_properties(KhDetector_CLAP PROPERTIES
+        SUFFIX ".clap"
+    )
+endif()
+
+# CLAP Compiler settings
+if(MSVC)
+    target_compile_options(KhDetector_CLAP PRIVATE /W4)
+    target_compile_definitions(KhDetector_CLAP PRIVATE
+        WIN32_LEAN_AND_MEAN
+        NOMINMAX
+    )
+    # Enable AVX/SSE on Windows
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64|x86_64|x64")
+        target_compile_options(KhDetector_CLAP PRIVATE /arch:AVX)
+    endif()
+else()
+    target_compile_options(KhDetector_CLAP PRIVATE -Wall -Wextra -Wpedantic)
+    # Enable SIMD optimizations
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
+        target_compile_options(KhDetector_CLAP PRIVATE -msse2 -msse4.1 -mavx)
+    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64|arm64")
+        target_compile_options(KhDetector_CLAP PRIVATE -march=armv8-a)
+    endif()
+endif()
+
+message(STATUS "KhDetector build configured with VST3 and CLAP support")
+message(STATUS "  Build type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "  Decimation factor: ${DECIM_FACTOR}")
+message(STATUS "  Build tests: ${BUILD_TESTS}")
+message(STATUS "  Platform: ${CMAKE_SYSTEM_NAME}")
+
+if(BUILD_TESTS)
+    message(STATUS "")
+    message(STATUS "To build and run tests:")
+    message(STATUS "  cmake --build build --target KhDetectorTests")
+    message(STATUS "  cd build && ctest --verbose")
+    message(STATUS "")
+    message(STATUS "To build VST3 plugin:")
+    message(STATUS "  cmake --build build --target KhDetector_VST3")
+    message(STATUS "")
+    message(STATUS "To build CLAP plugin:")
+    message(STATUS "  cmake --build build --target KhDetector_CLAP")
+    message(STATUS "")
+    message(STATUS "To run OpenGL GUI demo:")
+    message(STATUS "  cmake --build build --target opengl_gui_demo")
+    message(STATUS "  ./build/opengl_gui_demo")
+    message(STATUS "")
+    message(STATUS "To run Resizable UI demo:")
+    message(STATUS "  cmake --build build --target resizable_ui_demo")
+    message(STATUS "  ./build/resizable_ui_demo")
+    message(STATUS "")
+    message(STATUS "To run Simple UI demo:")
+    message(STATUS "  cmake --build build --target simple_ui_demo")
+    message(STATUS "  ./build/simple_ui_demo")
+    message(STATUS "")
+    message(STATUS "To run CLAP plugin demo:")
+    message(STATUS "  cmake --build build --target clap_demo")
+    message(STATUS "  ./build/clap_demo")
+endif() 

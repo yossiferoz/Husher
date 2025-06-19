@@ -1,0 +1,122 @@
+# Build directories
+build/
+builds/
+out/
+bin/
+lib/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# Visual Studio
+.vs/
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.db
+*.opendb
+*.ipch
+
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+# Code::Blocks
+*.cbp
+*.layout
+*.depend
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Compiled Object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.a
+*.la
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Plugin binaries (but keep source)
+*.vst3/Contents/MacOS/*
+*.vst3/Contents/Windows/*
+*.vst3/Contents/Linux/*
+*.component/Contents/MacOS/*
+*.aaxplugin/Contents/MacOS/*
+
+# Temporary files
+*~
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+
+# Package managers
+conan/
+vcpkg/
+
+# Debug files
+*.dSYM/
+*.pdb
+*.idb
+*.ilk
+
+# Profiling
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Build artifacts
+*.tlog
+*.lastbuildstate
+*.unsuccessfulbuild 

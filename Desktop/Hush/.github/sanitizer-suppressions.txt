@@ -1,0 +1,47 @@
+# Sanitizer suppressions for KhDetector tests
+# This file suppresses known issues in third-party dependencies
+
+# GoogleTest internal allocations
+leak:testing::internal::*
+leak:*gtest*
+leak:*gmock*
+
+# VST3 SDK allocations (not our concern for real-time safety)
+leak:*vst3*
+leak:*VST3*
+leak:*Steinberg*
+
+# VSTGUI allocations (GUI framework, not real-time)
+leak:*VSTGUI*
+leak:*vstgui*
+
+# OpenGL/graphics driver allocations
+leak:*libGL*
+leak:*nvidia*
+leak:*mesa*
+leak:*dri*
+
+# System library allocations
+leak:*libc*
+leak:*libpthread*
+leak:*libm*
+leak:*libdl*
+
+# GTK/X11 allocations (GUI, not real-time critical)
+leak:*gtk*
+leak:*gdk*
+leak:*X11*
+leak:*xcb*
+
+# Thread sanitizer suppressions for known false positives
+# (These are typically in third-party code)
+race:*gtest*
+race:*pthread*
+
+# Suppress data races in graphics drivers
+race:*libGL*
+race:*nvidia*
+
+# Suppress races in system libraries
+race:*libc*
+race:*libpthread* 
