@@ -1,0 +1,6 @@
+[submodule "Desktop/Hush/external/vst3sdk"]
+	path = Desktop/Hush/external/vst3sdk
+	url = https://github.com/steinbergmedia/vst3sdk.git
+[submodule "Desktop/Hush/external/vstgui"]
+	path = Desktop/Hush/external/vstgui
+	url = https://github.com/steinbergmedia/vstgui.git
