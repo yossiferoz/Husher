@@ -4,9 +4,9 @@
 HusherAudioProcessorEditor::HusherAudioProcessorEditor (HusherAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize (400, 300);
+    setSize (400, compactHeight);
     setResizable(true, true);
-    setResizeLimits(300, 200, 800, 600);
+    setResizeLimits(300, 200, 1000, 800);
     
     // Sensitivity slider setup
     sensitivitySlider.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -21,6 +21,17 @@ HusherAudioProcessorEditor::HusherAudioProcessorEditor (HusherAudioProcessor& p)
     sensitivityLabel.setText("Sensitivity", juce::dontSendNotification);
     sensitivityLabel.attachToComponent(&sensitivitySlider, true);
     addAndMakeVisible(sensitivityLabel);
+    
+    // "Hush It!" button setup
+    hushItButton.setButtonText("Hush It!");
+    hushItButton.setColour(juce::TextButton::buttonColourId, juce::Colours::darkred);
+    hushItButton.setColour(juce::TextButton::textColourOffId, juce::Colours::white);
+    hushItButton.addListener(this);
+    addAndMakeVisible(hushItButton);
+    
+    // Initialize waveform display (but don't make visible yet)
+    waveformDisplay = std::make_unique<WaveformVisualization>();
+    addChildComponent(waveformDisplay.get());
     
     // Initialize confidence meter area (temporary until resized() is called)
     confidenceMeterArea = juce::Rectangle<int>(20, 100, 360, 40);
@@ -95,6 +106,17 @@ void HusherAudioProcessorEditor::resized()
     sliderArea.removeFromLeft(80); // Space for label
     sensitivitySlider.setBounds(sliderArea);
     
+    // "Hush It!" button area
+    auto buttonArea = area.removeFromTop(50).reduced(20);
+    hushItButton.setBounds(buttonArea);
+    
+    // Waveform display area (if visible)
+    if (showingWaveform && waveformDisplay)
+    {
+        auto waveformArea = area.reduced(10);
+        waveformDisplay->setBounds(waveformArea);
+    }
+    
     // Debug: Force repaint when resized
     repaint();
 }
@@ -107,5 +129,65 @@ void HusherAudioProcessorEditor::timerCallback()
     {
         currentConfidence = newConfidence;
         repaint();
+    }
+    
+    // Update waveform display if visible
+    if (showingWaveform)
+    {
+        updateWaveformDisplay();
+    }
+}
+
+void HusherAudioProcessorEditor::buttonClicked(juce::Button* button)
+{
+    if (button == &hushItButton)
+    {
+        toggleWaveformView();
+    }
+}
+
+void HusherAudioProcessorEditor::toggleWaveformView()
+{
+    if (!showingWaveform)
+    {
+        // Start recording and show waveform
+        audioProcessor.startRecording();
+        showingWaveform = true;
+        waveformDisplay->setVisible(true);
+        hushItButton.setButtonText("Stop Analysis");
+        hushItButton.setColour(juce::TextButton::buttonColourId, juce::Colours::darkgreen);
+        
+        // Expand window
+        setSize(getWidth(), expandedHeight);
+    }
+    else
+    {
+        // Stop recording and analyze
+        audioProcessor.stopRecording();
+        showingWaveform = false;
+        hushItButton.setButtonText("Hush It!");
+        hushItButton.setColour(juce::TextButton::buttonColourId, juce::Colours::darkred);
+        
+        // Update waveform with final data
+        updateWaveformDisplay();
+        
+        // Keep waveform visible for analysis
+        // (Don't hide it so user can see results)
+    }
+    
+    resized(); // Trigger layout update
+}
+
+void HusherAudioProcessorEditor::updateWaveformDisplay()
+{
+    if (!waveformDisplay)
+        return;
+    
+    // Get recording buffer and detections from processor
+    auto* recordingBuffer = audioProcessor.getRecordingBuffer();
+    if (recordingBuffer)
+    {
+        waveformDisplay->setAudioBuffer(recordingBuffer);
+        waveformDisplay->setDetections(recordingBuffer->getDetections());
     }
 }

@@ -33,6 +33,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o.d"
   "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o"
   "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o.d"
+  "CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o"
+  "CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o.d"
   "CMakeFiles/Husher.dir/Source/HebrewDetector.cpp.o"
   "CMakeFiles/Husher.dir/Source/HebrewDetector.cpp.o.d"
   "CMakeFiles/Husher.dir/Source/ONNXInterface.cpp.o"
@@ -43,6 +45,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Husher.dir/Source/PluginProcessor.cpp.o.d"
   "CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.o"
   "CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.o.d"
+  "CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o"
+  "CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o.d"
   "Husher_artefacts/libHusher_SharedCode.a"
   "Husher_artefacts/libHusher_SharedCode.pdb"
 )

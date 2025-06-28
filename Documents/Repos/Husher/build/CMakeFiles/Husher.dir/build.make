@@ -142,10 +142,38 @@ CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/yossiraz/Documents/Repos/Husher/Source/RealtimeInferenceEngine.cpp -o CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.s
 
+CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o: CMakeFiles/Husher.dir/flags.make
+CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o: /Users/yossiraz/Documents/Repos/Husher/Source/AudioRecordingBuffer.cpp
+CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o: CMakeFiles/Husher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o -MF CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o.d -o CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o -c /Users/yossiraz/Documents/Repos/Husher/Source/AudioRecordingBuffer.cpp
+
+CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/yossiraz/Documents/Repos/Husher/Source/AudioRecordingBuffer.cpp > CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.i
+
+CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/yossiraz/Documents/Repos/Husher/Source/AudioRecordingBuffer.cpp -o CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.s
+
+CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o: CMakeFiles/Husher.dir/flags.make
+CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o: /Users/yossiraz/Documents/Repos/Husher/Source/WaveformVisualization.cpp
+CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o: CMakeFiles/Husher.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o -MF CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o.d -o CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o -c /Users/yossiraz/Documents/Repos/Husher/Source/WaveformVisualization.cpp
+
+CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/yossiraz/Documents/Repos/Husher/Source/WaveformVisualization.cpp > CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.i
+
+CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/yossiraz/Documents/Repos/Husher/Source/WaveformVisualization.cpp -o CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.s
+
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.i: cmake_force
@@ -159,7 +187,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_a
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.i: cmake_force
@@ -173,7 +201,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_l
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_processors/juce_audio_processors.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_processors/juce_audio_processors.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.i: cmake_force
@@ -187,7 +215,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.m
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_gui_extra/juce_gui_extra.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_gui_extra/juce_gui_extra.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.i: cmake_force
@@ -201,7 +229,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.s: cmake_for
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_gui_basics/juce_gui_basics.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_gui_basics/juce_gui_basics.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.i: cmake_force
@@ -215,7 +243,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.s: cmake_f
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.i: cmake_force
@@ -229,7 +257,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.s: c
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.i: cmake_force
@@ -243,7 +271,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Sheenbidi.c.s: cm
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.i: cmake_force
@@ -257,7 +285,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics.mm.s: cmake_force
 CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_events/juce_events.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_events/juce_events.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.i: cmake_force
@@ -271,7 +299,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_events/juce_events.mm.s: cmake_force
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_core/juce_core_CompilationTime.cpp
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_core/juce_core_CompilationTime.cpp
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.i: cmake_force
@@ -285,7 +313,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core_CompilationTime.cpp.s: cm
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_core/juce_core.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_core/juce_core.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.i: cmake_force
@@ -299,7 +327,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_core/juce_core.mm.s: cmake_force
 CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_data_structures/juce_data_structures.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_data_structures/juce_data_structures.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.i: cmake_force
@@ -313,7 +341,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_data_structures/juce_data_structures.mm.
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_basics/juce_audio_basics.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_basics/juce_audio_basics.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.i: cmake_force
@@ -327,7 +355,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_basics/juce_audio_basics.mm.s: cma
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_utils/juce_audio_utils.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_utils/juce_audio_utils.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.i: cmake_force
@@ -341,7 +369,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_utils/juce_audio_utils.mm.s: cmake
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_formats/juce_audio_formats.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_formats/juce_audio_formats.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.i: cmake_force
@@ -355,7 +383,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_formats/juce_audio_formats.mm.s: c
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_devices/juce_audio_devices.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_audio_devices/juce_audio_devices.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.i: cmake_force
@@ -369,7 +397,7 @@ CMakeFiles/Husher.dir/JUCE/modules/juce_audio_devices/juce_audio_devices.mm.s: c
 CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o: CMakeFiles/Husher.dir/flags.make
 CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o: /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_dsp/juce_dsp.mm
 CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o: CMakeFiles/Husher.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o -MF CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o.d -o CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o -c /Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_dsp/juce_dsp.mm
 
 CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.i: cmake_force
@@ -387,6 +415,8 @@ Husher_OBJECTS = \
 "CMakeFiles/Husher.dir/Source/HebrewDetector.cpp.o" \
 "CMakeFiles/Husher.dir/Source/ONNXInterface.cpp.o" \
 "CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.o" \
+"CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o" \
+"CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o" \
 "CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o" \
 "CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o" \
 "CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o" \
@@ -413,6 +443,8 @@ Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/Source/PluginEdit
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/Source/HebrewDetector.cpp.o
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/Source/ONNXInterface.cpp.o
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.o
+Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o
+Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_ara.cpp.o
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors_lv2_libs.cpp.o
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/JUCE/modules/juce_audio_processors/juce_audio_processors.mm.o
@@ -432,7 +464,7 @@ Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/JUCE/modules/juce
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/JUCE/modules/juce_dsp/juce_dsp.mm.o
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/build.make
 Husher_artefacts/libHusher_SharedCode.a: CMakeFiles/Husher.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Linking CXX static library Husher_artefacts/libHusher_SharedCode.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/yossiraz/Documents/Repos/Husher/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Linking CXX static library Husher_artefacts/libHusher_SharedCode.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/Husher.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Husher.dir/link.txt --verbose=$(VERBOSE)
 

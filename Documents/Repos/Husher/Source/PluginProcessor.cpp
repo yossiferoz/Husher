@@ -78,6 +78,7 @@ void HusherAudioProcessor::changeProgramName (int index, const juce::String& new
 void HusherAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     detector.prepare(sampleRate, samplesPerBlock);
+    recordingBuffer.prepare(sampleRate, 300); // 5 minutes max recording
 }
 
 void HusherAudioProcessor::releaseResources()
@@ -108,9 +109,22 @@ void HusherAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
+    // Add audio to recording buffer if recording
+    if (recordingBuffer.isRecording())
+    {
+        recordingBuffer.addAudioData(buffer);
+    }
+
     // Process audio for Hebrew ח detection
     auto confidence = detector.processAudio(buffer, getSensitivity());
     confidenceLevel.store(confidence);
+    
+    // Add detection to recording buffer if confidence is high enough
+    if (confidence > getSensitivity() && recordingBuffer.isRecording())
+    {
+        double currentTime = juce::Time::getMillisecondCounterHiRes() / 1000.0;
+        recordingBuffer.addDetection(currentTime, confidence);
+    }
     
     // Generate MIDI markers for detected ח sounds
     if (confidence > getSensitivity())
@@ -156,6 +170,16 @@ void HusherAudioProcessor::setStateInformation (const void* data, int sizeInByte
             *sensitivityParam = state.getProperty("sensitivity", 0.5f);
         }
     }
+}
+
+void HusherAudioProcessor::startRecording()
+{
+    recordingBuffer.startRecording();
+}
+
+void HusherAudioProcessor::stopRecording()
+{
+    recordingBuffer.stopRecording();
 }
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()

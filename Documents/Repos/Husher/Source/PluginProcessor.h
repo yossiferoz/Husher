@@ -3,6 +3,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "HebrewDetector.h"
+#include "AudioRecordingBuffer.h"
 
 class HusherAudioProcessor : public juce::AudioProcessor
 {
@@ -41,12 +42,19 @@ public:
     // Plugin-specific methods
     float getConfidenceLevel() const { return confidenceLevel.load(); }
     float getSensitivity() const { return *sensitivityParam; }
+    
+    // Recording functionality
+    void startRecording();
+    void stopRecording();
+    bool isRecording() const { return recordingBuffer.isRecording(); }
+    const AudioRecordingBuffer* getRecordingBuffer() const { return &recordingBuffer; }
 
 private:
     juce::AudioParameterFloat* sensitivityParam;
     std::atomic<float> confidenceLevel{0.0f};
     
     HebrewDetector detector;
+    AudioRecordingBuffer recordingBuffer;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HusherAudioProcessor)
 };

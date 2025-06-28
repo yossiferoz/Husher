@@ -25,11 +25,13 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp" "CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o" "gcc" "CMakeFiles/Husher.dir/JUCE/modules/juce_graphics/juce_graphics_Harfbuzz.cpp.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_gui_basics/juce_gui_basics.mm" "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o" "gcc" "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/JUCE/modules/juce_gui_extra/juce_gui_extra.mm" "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o" "gcc" "CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.o.d"
+  "/Users/yossiraz/Documents/Repos/Husher/Source/AudioRecordingBuffer.cpp" "CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/Source/HebrewDetector.cpp" "CMakeFiles/Husher.dir/Source/HebrewDetector.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/HebrewDetector.cpp.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/Source/ONNXInterface.cpp" "CMakeFiles/Husher.dir/Source/ONNXInterface.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/ONNXInterface.cpp.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/Source/PluginEditor.cpp" "CMakeFiles/Husher.dir/Source/PluginEditor.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/PluginEditor.cpp.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/Source/PluginProcessor.cpp" "CMakeFiles/Husher.dir/Source/PluginProcessor.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/PluginProcessor.cpp.o.d"
   "/Users/yossiraz/Documents/Repos/Husher/Source/RealtimeInferenceEngine.cpp" "CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.o.d"
+  "/Users/yossiraz/Documents/Repos/Husher/Source/WaveformVisualization.cpp" "CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o" "gcc" "CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

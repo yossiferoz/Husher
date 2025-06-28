@@ -1336,4 +1336,6 @@ CMakeFiles/Husher.dir/Source/PluginProcessor.cpp.o: \
   /Users/yossiraz/Documents/Repos/Husher/Source/HebrewDetector.h \
   /Users/yossiraz/Documents/Repos/Husher/Source/RealtimeInferenceEngine.h \
   /Users/yossiraz/Documents/Repos/Husher/Source/ONNXInterface.h \
-  /Users/yossiraz/Documents/Repos/Husher/Source/PluginEditor.h
+  /Users/yossiraz/Documents/Repos/Husher/Source/AudioRecordingBuffer.h \
+  /Users/yossiraz/Documents/Repos/Husher/Source/PluginEditor.h \
+  /Users/yossiraz/Documents/Repos/Husher/Source/WaveformVisualization.h

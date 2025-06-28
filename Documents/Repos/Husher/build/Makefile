@@ -1002,6 +1002,30 @@ JUCE/modules/juce_gui_extra/juce_gui_extra.mm.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/JUCE/modules/juce_gui_extra/juce_gui_extra.mm.s
 .PHONY : JUCE/modules/juce_gui_extra/juce_gui_extra.mm.s
 
+Source/AudioRecordingBuffer.o: Source/AudioRecordingBuffer.cpp.o
+.PHONY : Source/AudioRecordingBuffer.o
+
+# target to build an object file
+Source/AudioRecordingBuffer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.o
+.PHONY : Source/AudioRecordingBuffer.cpp.o
+
+Source/AudioRecordingBuffer.i: Source/AudioRecordingBuffer.cpp.i
+.PHONY : Source/AudioRecordingBuffer.i
+
+# target to preprocess a source file
+Source/AudioRecordingBuffer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.i
+.PHONY : Source/AudioRecordingBuffer.cpp.i
+
+Source/AudioRecordingBuffer.s: Source/AudioRecordingBuffer.cpp.s
+.PHONY : Source/AudioRecordingBuffer.s
+
+# target to generate assembly for a file
+Source/AudioRecordingBuffer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/AudioRecordingBuffer.cpp.s
+.PHONY : Source/AudioRecordingBuffer.cpp.s
+
 Source/HebrewDetector.o: Source/HebrewDetector.cpp.o
 .PHONY : Source/HebrewDetector.o
 
@@ -1122,6 +1146,30 @@ Source/RealtimeInferenceEngine.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/RealtimeInferenceEngine.cpp.s
 .PHONY : Source/RealtimeInferenceEngine.cpp.s
 
+Source/WaveformVisualization.o: Source/WaveformVisualization.cpp.o
+.PHONY : Source/WaveformVisualization.o
+
+# target to build an object file
+Source/WaveformVisualization.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.o
+.PHONY : Source/WaveformVisualization.cpp.o
+
+Source/WaveformVisualization.i: Source/WaveformVisualization.cpp.i
+.PHONY : Source/WaveformVisualization.i
+
+# target to preprocess a source file
+Source/WaveformVisualization.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.i
+.PHONY : Source/WaveformVisualization.cpp.i
+
+Source/WaveformVisualization.s: Source/WaveformVisualization.cpp.s
+.PHONY : Source/WaveformVisualization.s
+
+# target to generate assembly for a file
+Source/WaveformVisualization.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Husher.dir/build.make CMakeFiles/Husher.dir/Source/WaveformVisualization.cpp.s
+.PHONY : Source/WaveformVisualization.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1227,6 +1275,9 @@ help:
 	@echo "... JUCE/modules/juce_gui_extra/juce_gui_extra.o"
 	@echo "... JUCE/modules/juce_gui_extra/juce_gui_extra.i"
 	@echo "... JUCE/modules/juce_gui_extra/juce_gui_extra.s"
+	@echo "... Source/AudioRecordingBuffer.o"
+	@echo "... Source/AudioRecordingBuffer.i"
+	@echo "... Source/AudioRecordingBuffer.s"
 	@echo "... Source/HebrewDetector.o"
 	@echo "... Source/HebrewDetector.i"
 	@echo "... Source/HebrewDetector.s"
@@ -1242,6 +1293,9 @@ help:
 	@echo "... Source/RealtimeInferenceEngine.o"
 	@echo "... Source/RealtimeInferenceEngine.i"
 	@echo "... Source/RealtimeInferenceEngine.s"
+	@echo "... Source/WaveformVisualization.o"
+	@echo "... Source/WaveformVisualization.i"
+	@echo "... Source/WaveformVisualization.s"
 .PHONY : help
 
 
