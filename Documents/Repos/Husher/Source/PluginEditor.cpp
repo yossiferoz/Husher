@@ -5,6 +5,8 @@ HusherAudioProcessorEditor::HusherAudioProcessorEditor (HusherAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
     setSize (400, 300);
+    setResizable(true, true);
+    setResizeLimits(300, 200, 800, 600);
     
     // Sensitivity slider setup
     sensitivitySlider.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -36,13 +38,13 @@ void HusherAudioProcessorEditor::paint (juce::Graphics& g)
     // Draw title
     g.setColour (juce::Colours::white);
     g.setFont (24.0f);
-    g.drawFittedText ("Husher", getLocalBounds().removeFromTop(60), 
+    g.drawFittedText ("Husher", juce::Rectangle<int>(0, 10, getWidth(), 30), 
                       juce::Justification::centred, 1);
     
     // Draw subtitle
     g.setFont (14.0f);
     g.setColour (juce::Colours::lightgrey);
-    g.drawFittedText ("Hebrew ח Detection", getLocalBounds().removeFromTop(80).removeFromBottom(20), 
+    g.drawFittedText (juce::String::fromUTF8("Hebrew \u05d7 Detection"), juce::Rectangle<int>(0, 45, getWidth(), 20), 
                       juce::Justification::centred, 1);
     
     // Draw confidence meter
