@@ -7,3 +7,6 @@
 [submodule "Desktop/Hush/external/clap-sdk"]
 	path = Desktop/Hush/external/clap-sdk
 	url = https://github.com/free-audio/clap.git
+[submodule "Documents/Repos/Husher/JUCE"]
+	path = Documents/Repos/Husher/JUCE
+	url = https://github.com/juce-framework/JUCE.git
