@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/yossiraz/Documents/Repos/Husher/build/cmake_install.cmake",
+		"/Users/yossiraz/Documents/Repos/Husher/build/JUCE/cmake_install.cmake",
+		"/Users/yossiraz/Documents/Repos/Husher/build/JUCE/modules/cmake_install.cmake",
+		"/Users/yossiraz/Documents/Repos/Husher/build/JUCE/extras/Build/cmake_install.cmake",
+		"/Users/yossiraz/Documents/Repos/Husher/build/JUCE/extras/Build/juceaide/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

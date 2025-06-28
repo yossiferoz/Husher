@@ -28,7 +28,8 @@ target_sources(Husher
         Source/PluginProcessor.cpp
         Source/PluginEditor.cpp
         Source/HebrewDetector.cpp
-        Source/ONNXInterface.cpp)
+        Source/ONNXInterface.cpp
+        Source/RealtimeInferenceEngine.cpp)
 
 # Link JUCE libraries
 target_link_libraries(Husher

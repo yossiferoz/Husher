@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+e2e5dbce81c63f8c9c6dbc6e1b2c3bec Husher_artefacts/JuceLibraryCode/Husher_AU/PkgInfo
+53f8f3595a93430b4d1822c46dafec53 Husher_artefacts/JuceLibraryCode/Husher_Standalone/PkgInfo
+b6ece10d42cb18a31e465d270a5d036b Husher_artefacts/JuceLibraryCode/Husher_VST3/PkgInfo

@@ -2,40 +2,81 @@
 
 HebrewDetector::HebrewDetector()
 {
-    modelInterface = std::make_unique<ONNXInterface>();
+    inferenceEngine = std::make_unique<RealtimeInferenceEngine>();
     
-    // Load a dummy model path for now
-    modelInterface->loadModel("dummy_model.onnx");
+    // Initialize with dummy model path for now
+    inferenceEngine->initialize("het_detector.onnx");
+    
+    // Reserve audio buffer
+    audioBuffer.reserve(PROCESSING_WINDOW_SIZE);
 }
 
 HebrewDetector::~HebrewDetector()
 {
+    inferenceEngine->shutdown();
 }
 
 void HebrewDetector::prepare(double sampleRate, int blockSize)
 {
     currentSampleRate = sampleRate;
     currentBlockSize = blockSize;
+    
+    // Clear audio buffer
+    audioBuffer.clear();
 }
 
 void HebrewDetector::reset()
 {
-    // Reset any internal state
+    // Reset internal state
+    audioBuffer.clear();
+    lastConfidence.store(0.0f);
+    smoothedConfidence.store(0.0f);
 }
 
 float HebrewDetector::processAudio(const juce::AudioBuffer<float>& buffer, float sensitivity)
 {
-    // Convert audio buffer to feature vector
+    // Convert audio buffer to mono feature vector
     auto features = convertAudioToFeatures(buffer);
     
-    // Run AI inference
-    auto results = modelInterface->runInference(features);
+    // Accumulate audio samples for processing window
+    audioBuffer.insert(audioBuffer.end(), features.begin(), features.end());
     
-    // Extract confidence (assuming single output)
-    float rawConfidence = results.empty() ? 0.0f : results[0];
+    // Process when we have enough samples
+    if (audioBuffer.size() >= PROCESSING_WINDOW_SIZE)
+    {
+        // Submit inference request (non-blocking)
+        std::vector<float> processingWindow(
+            audioBuffer.begin(), 
+            audioBuffer.begin() + PROCESSING_WINDOW_SIZE
+        );
+        
+        inferenceEngine->submitInference(processingWindow);
+        
+        // Remove processed samples (with 50% overlap)
+        size_t samplesToRemove = PROCESSING_WINDOW_SIZE / 2;
+        audioBuffer.erase(audioBuffer.begin(), audioBuffer.begin() + samplesToRemove);
+    }
+    
+    // Check for latest inference results
+    InferenceResult result;
+    if (inferenceEngine->getLatestResult(result))
+    {
+        updateSmoothedConfidence(result.confidence);
+    }
     
     // Apply post-processing with sensitivity
-    return applyPostProcessing(rawConfidence, sensitivity);
+    float currentConfidence = smoothedConfidence.load();
+    return applyPostProcessing(currentConfidence, sensitivity);
+}
+
+float HebrewDetector::getAverageLatency() const
+{
+    return inferenceEngine ? inferenceEngine->getAverageLatency() : 0.0f;
+}
+
+bool HebrewDetector::isHealthy() const
+{
+    return inferenceEngine ? inferenceEngine->isHealthy() : false;
 }
 
 std::vector<float> HebrewDetector::convertAudioToFeatures(const juce::AudioBuffer<float>& buffer)
@@ -45,7 +86,7 @@ std::vector<float> HebrewDetector::convertAudioToFeatures(const juce::AudioBuffe
     const int numChannels = buffer.getNumChannels();
     const int numSamples = buffer.getNumSamples();
     
-    // Convert to mono if needed and create feature vector
+    // Convert to mono
     features.reserve(numSamples);
     
     for (int sample = 0; sample < numSamples; ++sample)
@@ -73,9 +114,21 @@ float HebrewDetector::applyPostProcessing(float rawConfidence, float sensitivity
     // Sensitivity 0.0 = very strict (higher threshold)
     // Sensitivity 1.0 = very loose (lower threshold)
     
-    float threshold = 0.5f * (1.0f - sensitivity); // Threshold decreases as sensitivity increases
+    float threshold = 0.3f * (1.0f - sensitivity); // Threshold decreases as sensitivity increases
     float adjustedConfidence = (rawConfidence - threshold) / (1.0f - threshold);
     
     // Clamp to [0, 1] range
     return std::max(0.0f, std::min(1.0f, adjustedConfidence));
+}
+
+void HebrewDetector::updateSmoothedConfidence(float newConfidence)
+{
+    // Exponential moving average for smooth confidence updates
+    const float alpha = 0.2f; // Smoothing factor
+    
+    float currentSmoothed = smoothedConfidence.load();
+    float newSmoothed = alpha * newConfidence + (1.0f - alpha) * currentSmoothed;
+    
+    smoothedConfidence.store(newSmoothed);
+    lastConfidence.store(newConfidence);
 }
