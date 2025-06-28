@@ -53,3 +53,7 @@ target_compile_definitions(Husher
 target_include_directories(Husher
     PRIVATE
         Source)
+
+# TODO: Add ONNX Runtime
+# find_package(onnxruntime REQUIRED)
+# target_link_libraries(Husher PRIVATE onnxruntime)

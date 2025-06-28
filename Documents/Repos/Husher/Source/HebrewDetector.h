@@ -2,6 +2,7 @@
 
 #include <juce_audio_basics/juce_audio_basics.h>
 #include <memory>
+#include "ONNXInterface.h"
 
 class HebrewDetector
 {
@@ -18,11 +19,10 @@ private:
     double currentSampleRate = 44100.0;
     int currentBlockSize = 512;
     
-    // Temporary placeholder for actual detection logic
-    float simulateDetection(const juce::AudioBuffer<float>& buffer, float sensitivity);
+    std::unique_ptr<ONNXInterface> modelInterface;
     
-    // Future: ONNX model interface will go here
-    // std::unique_ptr<ONNXInterface> modelInterface;
+    std::vector<float> convertAudioToFeatures(const juce::AudioBuffer<float>& buffer);
+    float applyPostProcessing(float rawConfidence, float sensitivity);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HebrewDetector)
 };

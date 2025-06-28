@@ -22,6 +22,9 @@ HusherAudioProcessorEditor::HusherAudioProcessorEditor (HusherAudioProcessor& p)
     sensitivityLabel.attachToComponent(&sensitivitySlider, true);
     addAndMakeVisible(sensitivityLabel);
     
+    // Initialize confidence meter area (temporary until resized() is called)
+    confidenceMeterArea = juce::Rectangle<int>(20, 100, 360, 40);
+    
     // Start timer for GUI updates
     startTimerHz(30); // 30 FPS updates
 }
@@ -47,11 +50,11 @@ void HusherAudioProcessorEditor::paint (juce::Graphics& g)
     g.drawFittedText (juce::String::fromUTF8("Hebrew \u05d7 Detection"), juce::Rectangle<int>(0, 45, getWidth(), 20), 
                       juce::Justification::centred, 1);
     
-    // Draw confidence meter
+    // Draw confidence meter background
     g.setColour (juce::Colours::darkgrey);
     g.fillRect (confidenceMeterArea);
     
-    // Draw confidence level
+    // Draw confidence level bar
     auto confidenceWidth = static_cast<int>(currentConfidence * confidenceMeterArea.getWidth());
     auto confidenceRect = confidenceMeterArea.withWidth(confidenceWidth);
     
@@ -69,27 +72,31 @@ void HusherAudioProcessorEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::white);
     g.drawRect (confidenceMeterArea, 2);
     
-    // Draw confidence text
-    g.setFont (16.0f);
+    // Draw confidence text below meter
+    g.setFont (12.0f);
     g.setColour (juce::Colours::white);
     auto confidenceText = "Confidence: " + juce::String(currentConfidence * 100.0f, 1) + "%";
-    g.drawText (confidenceText, confidenceMeterArea.withY(confidenceMeterArea.getBottom() + 10),
-                juce::Justification::centred, true);
+    auto textArea = juce::Rectangle<int>(confidenceMeterArea.getX(), confidenceMeterArea.getBottom() + 5, 
+                                        confidenceMeterArea.getWidth(), 20);
+    g.drawText (confidenceText, textArea, juce::Justification::centred, true);
 }
 
 void HusherAudioProcessorEditor::resized()
 {
     auto area = getLocalBounds();
-    area.removeFromTop(100); // Space for title
+    area.removeFromTop(80); // Space for title and subtitle
     
-    // Confidence meter
-    confidenceMeterArea = area.removeFromTop(40).reduced(20);
-    area.removeFromTop(40); // Space for confidence text
+    // Confidence meter area
+    confidenceMeterArea = area.removeFromTop(50).reduced(20);
+    area.removeFromTop(20); // Space for confidence text
     
-    // Sensitivity slider
-    auto sliderArea = area.removeFromTop(40).reduced(20);
+    // Sensitivity slider area
+    auto sliderArea = area.removeFromTop(50).reduced(20);
     sliderArea.removeFromLeft(80); // Space for label
     sensitivitySlider.setBounds(sliderArea);
+    
+    // Debug: Force repaint when resized
+    repaint();
 }
 
 void HusherAudioProcessorEditor::timerCallback()
